@@ -5,6 +5,12 @@ import PageLayout from 'components/layout/PageLayout';
 import Empty from 'components/layout/PageLayout/Empty';
 import SimpleLayout from 'components/layout/SimpleLayout';
 import Landing from 'components/routes/Landing';
+import Immutable from 'seamless-immutable';
+
+const LandingRoutes = Immutable([
+  { href:'#/', label: 'Home', icon: 'room'},
+  { href:'#/editor', label: 'Editor', icon: 'room'}
+]);
 
 export default class Routes extends Component {
   

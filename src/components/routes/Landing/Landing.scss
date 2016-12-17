@@ -5,4 +5,64 @@
   justify-content: flex-start;
   align-items: stretch;
   align-content: stretch;
+  
+  > header {
+    padding: 0 calc((100% - 62rem) / 2);
+    color: #fafafa;
+    text-align: center;
+    background: linear-gradient(45deg, #9f3030, #b53f3f);
+    background-position: 100% 0;
+    background-size: 120%;
+    display: flex;
+  }
+  
+  > section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    
+    > nav {
+      padding: 0 calc((100% - 90rem) / 2);
+      text-align: center;
+    }
+    
+    > section {
+      flex: 1;
+      padding: 0 calc((100% - 90rem) / 2);
+    }
+  
+    > footer {
+      padding: 2rem 0;
+      color: #fafafa;
+      text-align: center;
+      background-color: #212121;
+    }
+  }
+}
+  
+.input {
+  margin: 0 2rem;
+  flex: 1;
+  > input {
+    color: #fafafa;
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+}
+  
+.hint {
+  color: rgba(255, 255, 255, 0.26);
+}
+
+.bar {
+  &:after, &:before {
+    background-color: #fafafa;
+  }
+}
+
+.horizontal {
+  > [data-react-toolbox=checkbox] {
+    display: inline-block;
+    margin: 1rem .5rem;
+  }
 }

@@ -1,13 +1,14 @@
-import { handleActions } from 'redux-actions';
+import { handleActions, createAction } from 'redux-actions';
 
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const FETCH_USER = 'FETCH_USER';
+export const ON_CHANGE = 'ON_CHANGE';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
+export const onChange = createAction(ON_CHANGE);
 
 // ------------------------------------
 // ASYNC Actions
@@ -21,14 +22,60 @@ export const actions = {
 // Initial State
 // ------------------------------------
 const initialState = {
-  user: {}
+  search: '',
+  loc: '',
+  open: true,
+  group: false,
+  outdoor: false,
+  results: [
+    {
+      avatar: 'https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg',
+      caption: 'Taco Shack',
+      legend: 'Open Now (3 miles away)'
+    },
+    {
+      avatar: 'https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg',
+      caption: 'Taco Shack',
+      legend: 'Open Now (3 miles away)'
+    },
+    {
+      avatar: 'https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg',
+      caption: 'Taco Shack',
+      legend: 'Open Now (3 miles away)'
+    },
+    {
+      avatar: 'https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg',
+      caption: 'Taco Shack',
+      legend: 'Open Now (3 miles away)'
+    },
+    {
+      avatar: 'https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg',
+      caption: 'Taco Shack',
+      legend: 'Open Now (3 miles away)'
+    },
+    {
+      avatar: 'https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg',
+      caption: 'Taco Shack',
+      legend: 'Open Now (3 miles away)'
+    },
+    {
+      avatar: 'https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg',
+      caption: 'Taco Shack',
+      legend: 'Open Now (3 miles away)'
+    },
+    {
+      avatar: 'https://dl.dropboxusercontent.com/u/2247264/assets/o.jpg',
+      caption: 'Taco Shack',
+      legend: 'Open Now (3 miles away)'
+    }
+  ]
 };
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 export const landingReducer = handleActions({
-  [`${FETCH_USER}_SUCCESS`]: (state, action) => ({...state, user: action.payload}),
+  [ON_CHANGE]: (state, action) => ({...state, ...action.payload})
 }, initialState);
 
 export default landingReducer;

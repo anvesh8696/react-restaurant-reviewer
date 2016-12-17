@@ -5,7 +5,7 @@ import { combineReducers, routerReducer, stateTransformer } from 'redux-seamless
 import thunkMiddleware from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
 import createLogger from 'redux-logger';
-import landingReducer from 'components/routes/Landing/LandingModule';
+import { landingReducer } from 'components/routes/Landing/LandingModule';
 
 const RootReducer = (asyncReducers) => {
   return combineReducers({
