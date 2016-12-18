@@ -51,6 +51,10 @@ var conf = {
       {
         test: /\.svg$/,
         loader: 'babel!svg-react'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader' 
       }
     ]
   },
@@ -78,9 +82,10 @@ var conf = {
   ],
   resolve: {
     alias: {
+      'api': path.resolve(SRC_PATH, 'api'),
       'components': path.resolve(SRC_PATH, 'components'),
-      'utils': path.resolve(SRC_PATH, 'utils'),
-      'static': path.resolve(ROOT_PATH, 'static')
+      'static': path.resolve(ROOT_PATH, 'static'),
+      'utils': path.resolve(SRC_PATH, 'utils')
     }
   }
 };
