@@ -1,0 +1,11 @@
+.stars {
+  color: #f3e015;
+}
+
+.right {
+  .itemAction {
+    > [data-react-toolbox=font-icon] {
+      color: #f3e015;
+    }
+  }
+}

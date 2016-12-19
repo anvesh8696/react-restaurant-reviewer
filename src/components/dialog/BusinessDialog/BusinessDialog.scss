@@ -1,0 +1,22 @@
+.body {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialogContent {
+  flex: 1;
+}
+
+.buttons {
+  text-align: right;
+}
+
+.normal {
+  width: 100vw;
+  height: 100vh;
+}
+
+.link {
+  justify-content: initial;
+}

@@ -1,6 +1,6 @@
 import { handleActions, createAction } from 'redux-actions';
 import Yelp from 'api/Yelp';
-import { map, sortBy, filter } from 'lodash';
+import { map, orderBy, filter, delay, dropRight, concat } from 'lodash';
 import { dispatch } from 'components/App';
 
 // ------------------------------------
@@ -30,35 +30,34 @@ export const onFilterUpdate = createAction(ON_FILTER_UPDATE);
 // ------------------------------------
 export function search() {
   return function (dispatch, getState) {
-    const { term, loc, popular, good, closed } = getState()[LANDING_STATE];
+    const { term, loc, popular, good, asc, reviews } = getState()[LANDING_STATE];
     
     yelp.search({ term: term, location: loc, category:'food,restaurants'})
     .then(function (data) {
-      console.log(data);
-      // format
-      return map(data.businesses, (d) => {
+      return map(data.businesses, (d) => d.id);
+    })
+    .then(yelp.business)
+    .then((data) => {
+      
+      let found = map(data, (d) => {
         return {
           id: d.id,
           thumb: d.image_url,
           name: d.name,
           rating: d.rating,
-          reviews: d.review_count,
+          reviews: concat(d.reviews, filter(reviews, { id: d.id})),
           city: d.location.city,
           state: d.location.state_code,
           postal: d.location.postal_code,
-          street: d.location.address[0]
+          street: d.location.address[0],
+          displayAddress: d.location.display_address.join(' ')
         };
       });
       
-      //return map(found, (d) => d.id);
-    })
-    //.then(yelp.business)
-    .then((data) => {
-      
       // update the view
       dispatch(onChange({
-        results: filterModel(popular, good, closed, data),
-        model: data
+        results: filterModel(popular, good, asc, found),
+        model: found
       }));
     })
     .catch(function (err) {
@@ -67,15 +66,16 @@ export function search() {
   };
 }
 
-const filterModel = (popular, stars, closed, data) => {
-  if(popular){
-    data = sortBy(data, ['popular', 'stars']);
-  }
+const filterModel = (popular, stars, asc, data) => {
   if(stars){
     data = filter(data, (o) => { return o.rating >= 4; });
   }
-  if(closed){
-    data = filter(data, (o) => { return o.closed === true; });
+  
+  if(popular){
+    data = asc ? orderBy(data, ['rating','name'], ['desc','asc']) : orderBy(data, ['rating'], ['desc']);
+    data = dropRight(data, data.length > 10 ? data.length - 10 : 0);
+  } else if(asc){
+    data = orderBy(data, ['name'], ['asc']);
   }
   return data;
 };
@@ -92,9 +92,10 @@ const initialState = {
   loc: 'Mountain View, CA',
   popular: true,
   good: false,
-  closed: false,
+  asc: false,
   results: [],
-  model: []
+  model: [],
+  reviews: []
 };
 
 // attempt to autofill location
@@ -107,8 +108,11 @@ if (navigator.geolocation) {
         let {city, state} = response;
         dispatch(onChange({geo: response, loc: `${city}, ${state}`}));
       }
+      delay(() => dispatch(search()), 100);
     });
   });
+} else {
+  delay(() => dispatch(search()), 100);
 }
 
 // ------------------------------------
@@ -117,8 +121,8 @@ if (navigator.geolocation) {
 export const landingReducer = handleActions({
   [ON_CHANGE]: (state, action) => ({...state, ...action.payload}),
   [ON_FILTER_UPDATE]: (state, action) => {
-    const { popular, good, closed, model } = state;
-    return {...state, results: filterModel(popular, good, closed, model)};
+    const { popular, good, asc, model } = state;
+    return {...state, results: filterModel(popular, good, asc, model)};
   }
 }, initialState);
 

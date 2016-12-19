@@ -3,8 +3,8 @@ import Landing from './Landing';
 import { onChange, onFilterUpdate, search } from './LandingModule';
 
 const mapStateToProps = (state) => {
-  let { term, loc, popular, good, closed, results } = state.landing;
-  return { term, loc, popular, good, closed, results };
+  let { term, loc, popular, good, asc, results } = state.landing;
+  return { term, loc, popular, good, asc, results };
 };
 
 const mapDispatchToProps = (dispatch) => {

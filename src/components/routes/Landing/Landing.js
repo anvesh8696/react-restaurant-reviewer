@@ -5,8 +5,9 @@ import defaultTheme from './Landing.scss';
 import Input from 'react-toolbox/components/input';
 import Navigation from 'react-toolbox/components/navigation';
 import Checkbox from 'react-toolbox/components/checkbox';
-import { List, ListItem, ListSubHeader } from 'react-toolbox/components/list';
-import { debounce } from 'lodash';
+import { debounce, find } from 'lodash';
+import BusinessDialog from 'components/dialog/BusinessDialog';
+import BusinessList from 'components/list/BusinessList';
 
 @themr('Landing', defaultTheme)
 class Landing extends Component {
@@ -20,7 +21,7 @@ class Landing extends Component {
       term: PropTypes.string,
       popular: PropTypes.bool,
       good: PropTypes.bool,
-      closed: PropTypes.bool,
+      asc: PropTypes.bool,
       results: PropTypes.array,
       onChange: PropTypes.func,
       onFilterUpdate: PropTypes.func,
@@ -28,7 +29,8 @@ class Landing extends Component {
     }
     
     state = {
-      loggingIn: false
+      loggingIn: false,
+      dialogOpen: false
     }
     
     debounceSearch = null;
@@ -37,21 +39,9 @@ class Landing extends Component {
       const { onChange, onFilterUpdate } = this.props;
       onChange(name, value);
       
-      if(name === 'popular' || name === 'good' || name === 'closed'){
+      if(name === 'popular' || name === 'good' || name === 'asc'){
         onFilterUpdate();
       }
-    }
-    
-    renderResult(index, avatar, caption, rating) {
-      return (
-        <ListItem
-          key={`res_${index}`}
-          avatar={avatar}
-          caption={caption}
-          legend={`${rating} / 5`}
-          rightIcon="star"
-        />
-      );
     }
     
     inputChanged = (prop, value) => {
@@ -76,14 +66,23 @@ class Landing extends Component {
       this.props.search();
     }
     
-    componentDidMount() {
-      setTimeout(this.updateSearch, 0);
+    handleClickBusiness = (businessID) => {
+      const business = find(this.props.results, {id: businessID});
+      if(business){
+        this.setState({...this.state, business: business, dialogOpen:true});
+      }
+    }
+    
+    updateState = (prop, value) => {
+      this.setState({...this.state, [prop]: value});
     }
   
     render() {
-      const { theme, results, term, loc, popular, good, closed } = this.props;
+      const { theme, results, term, loc, popular, good, asc } = this.props;
+      const { dialogOpen, business } = this.state;
       return (
         <Panel>
+          <BusinessDialog open={dialogOpen} business={business} onDone={() => this.updateState('dialogOpen', false)}/>
           <article className={theme.page}>
             <header>
               <Input theme={theme} type="text" hint="Search" name="search"
@@ -95,7 +94,7 @@ class Landing extends Component {
               <Navigation type="horizontal" theme={theme}>
                 <Checkbox
                   checked={popular}
-                  label="Popular"
+                  label="Top 10"
                   onChange={(value) => this.handleChange('popular', value)}
                 />
                 <Checkbox
@@ -104,20 +103,13 @@ class Landing extends Component {
                   onChange={(value) => this.handleChange('good', value)}
                 />
                 <Checkbox
-                  checked={closed}
-                  label="(permanently) closed"
-                  onChange={(value) => this.handleChange('closed', value)}
+                  checked={asc}
+                  label="ABC↓"
+                  onChange={(value) => this.handleChange('asc', value)}
                 />
               </Navigation>
               <section>
-                <List selectable ripple>
-                  <ListSubHeader caption="Search Results:" />
-                  {
-                    results ? 
-                    results.map((r, i) => this.renderResult(i, r.thumb, r.name, r.rating)) :
-                    <span></span>
-                  }
-                </List>
+                <BusinessList businesses={results} onChange={this.handleClickBusiness} />
               </section>
               <footer>
                 <small>Created By: </small> Joshua Bence
