@@ -37,6 +37,7 @@ class ReviewList extends Component {
           <ListItem
             key={`res_${index}`}
             avatar={avatar}
+            avatarAlt={`${name} image`}
             caption={`${name} -${this.formatDate(new Date(timeCreated * 1000))}`}
             legend={<FontIcon ariaLabel={`, gave it a ${rating} star rating`} value={this.stars(rating)} className={theme.stars}/>}
             theme={theme}
@@ -48,6 +49,7 @@ class ReviewList extends Component {
         <ListItem
           key={`res_${index}`}
           avatar={avatar}
+          avatarAlt={`${name} image`}
           caption={`${name} -${this.formatDate(new Date(timeCreated * 1000))}`}
           legend={review}
           rightIcon={<FontIcon ariaLabel={`, gave it a ${rating} star rating`} value={this.stars(rating)} className={theme.stars}/>}

@@ -55,6 +55,7 @@ class BusinessList extends Component {
           <ListItem
             key={`res_${index}`}
             avatar={avatar || <DefaultIcon />}
+            avatarAlt={`${caption} image`}
             caption={caption}
             legend={<FontIcon ariaLabel={`, ${rating} star rating`} value={this.stars(rating)} className={theme.stars}/>}
             theme={theme}
@@ -68,6 +69,7 @@ class BusinessList extends Component {
         <ListItem
           key={`res_${index}`}
           avatar={avatar || <DefaultIcon />}
+          avatarAlt={`${caption} image`}
           caption={caption}
           legend={displayAddress}
           rightIcon={<FontIcon ariaLabel={`, ${rating} star rating`} value={this.stars(rating)}/>}
