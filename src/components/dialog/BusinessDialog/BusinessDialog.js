@@ -53,7 +53,7 @@ class BusinessDialog extends Component {
             />
             {
               leftReview ? null :
-              <ReviewForm onSubmit={(review, rating) => onReviewSubmit(business.id, review, rating)} />
+              <ReviewForm onSubmit={(username, review, rating) => onReviewSubmit(business.id, username, review, rating)} />
             }
             <ReviewList reviews={reviews} />
           </div>

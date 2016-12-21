@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onChange: (prop, value) => dispatch(onChange({[prop]: value})),
     onFilterUpdate: () => dispatch(onFilterUpdate()),
-    onReviewSubmit: (businessID, review, rating) => dispatch(onReviewSubmit({businessID, review, rating})),
+    onReviewSubmit: (businessID, username, review, rating) => dispatch(onReviewSubmit({businessID, username, review, rating})),
     search: () => dispatch(search())
   };
 };

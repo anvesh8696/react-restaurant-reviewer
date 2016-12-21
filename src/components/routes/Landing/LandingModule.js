@@ -118,7 +118,7 @@ if (navigator.geolocation) {
 
 const handleAddReview = (state, data) => {
   const { reviews, model, results } = state;
-  const { businessID, review, rating } = data;
+  const { businessID, username, review, rating } = data;
   const mfi = findIndex(model, {id: businessID});
   const rfi = findIndex(results, {id: businessID});
   
@@ -130,7 +130,7 @@ const handleAddReview = (state, data) => {
     user : {
       id: 'dwwqUjXrUmMXfsEH1eOBMQ',
       image_url: 'https://s3-media3.fl.yelpcdn.com/assets/srv0/yelp_styleguide/bf5ff8a79310/assets/img/default_avatars/user_medium_square.png',
-      name : 'Anonymous'
+      name : username
     }
   };
   
