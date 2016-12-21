@@ -58,7 +58,7 @@ class BusinessDialog extends Component {
             <ReviewList reviews={reviews} />
           </div>
           <footer className={theme.buttons}>
-            <Button label="Close" raised primary onClick={onDone}/>
+            <Button label="Close" raised onClick={onDone}/>
           </footer>
         </Dialog>
       );

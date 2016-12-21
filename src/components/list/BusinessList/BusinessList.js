@@ -30,6 +30,16 @@ class BusinessList extends Component {
       return fill(Array(f), 'star').join(' ') + remain;
     }
     
+    onListItemKeyDown = (event, id) => {
+      const { onChange } = this.props;
+      const keyCode = event.which || event.keyCode;
+      
+      // enter key acts as click
+      if(keyCode === 13){
+        onChange(id);
+      }
+    }
+    
     renderResult(index, id, avatar, caption, rating, displayAddress) {
       const { theme, onChange } = this.props;
       const { width } = this.props.size;
@@ -49,6 +59,7 @@ class BusinessList extends Component {
             legend={<FontIcon ariaLabel={`, ${rating} star rating`} value={this.stars(rating)} className={theme.stars}/>}
             theme={theme}
             onClick={() => onChange(id)}
+            onKeyPress={(e) => this.onListItemKeyDown(e, id)}
           />
         );
       }
@@ -62,8 +73,7 @@ class BusinessList extends Component {
           rightIcon={<FontIcon ariaLabel={`, ${rating} star rating`} value={this.stars(rating)}/>}
           theme={theme}
           onClick={() => onChange(id)}
-          tabIndex="0"
-          aria-label={`${caption} has a ${rating} star`}
+          onKeyPress={(e) => this.onListItemKeyDown(e, id)}
         />
       );
     }

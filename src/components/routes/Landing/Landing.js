@@ -80,22 +80,6 @@ class Landing extends Component {
     updateSearch = () => {
       this.props.search();
     }
-    
-    componentWillReceiveProps(nextProps) {
-      // console.log(nextProps)
-      // if(nextProps.results){
-      //   let { business } = this.state;
-      //   let nextBusiness = find(nextProps.results, {id: business.id});
-        
-      //   console.log('nextBusiness', business, nextBusiness);
-      //   // should update the local business state
-      //   if(business && nextBusiness){
-      //     if(nextBusiness.reviews.length != business.reviews.length){
-      //       this.setState({...this.state, business:nextBusiness});
-      //     }
-      //   }
-      // }
-    }
   
     render() {
       const { theme, results, term, loc, popular, good, asc, onReviewSubmit } = this.props;

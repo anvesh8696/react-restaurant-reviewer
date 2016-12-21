@@ -126,7 +126,7 @@ const handleAddReview = (state, data) => {
     business: businessID,
     excerpt: review,
     rating: rating,
-    time_created: new Date().getTime(),
+    time_created: new Date().getTime() / 1000,
     user : {
       id: 'dwwqUjXrUmMXfsEH1eOBMQ',
       image_url: 'https://s3-media3.fl.yelpcdn.com/assets/srv0/yelp_styleguide/bf5ff8a79310/assets/img/default_avatars/user_medium_square.png',

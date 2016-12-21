@@ -41,7 +41,7 @@ class ReviewForm extends Component {
               value={review} onChange={(value)=>this.handleChange('review', value)}/>
           </div>
           <CardActions theme={theme}>
-            <Button label="Add Review" disabled={review === ''} onClick={this.handleClick}/>
+            <Button label="Add Review" raised={review != ''} primary disabled={review === ''} onClick={this.handleClick}/>
           </CardActions>
         </Card>
       );
