@@ -1,3 +1,5 @@
+@import "~react-toolbox/components/_colors";
+
 .page {
   display: flex;
   flex: 1;
@@ -10,7 +12,7 @@
     padding: 0 calc((100% - 62rem) / 2);
     color: #fafafa;
     text-align: center;
-    background: linear-gradient(45deg, #9f3030, #b53f3f);
+    background: linear-gradient(45deg, $palette-red-500, $palette-red-700);
     background-position: 100% 0;
     background-size: 120%;
     display: flex;

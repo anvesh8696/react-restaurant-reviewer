@@ -25,12 +25,14 @@ class Landing extends Component {
       results: PropTypes.array,
       onChange: PropTypes.func,
       onFilterUpdate: PropTypes.func,
+      onReviewSubmit: PropTypes.func,
       search: PropTypes.func
     }
     
     state = {
       loggingIn: false,
-      dialogOpen: false
+      dialogOpen: false,
+      businessID: 0
     }
     
     debounceSearch = null;
@@ -46,9 +48,14 @@ class Landing extends Component {
     
     inputChanged = (prop, value) => {
       let { term } = this.props;
+      
+      // alpha numeric or space
+      value = value.replace(/[^a-z0-9\d ]/gi,'');
+      
       if(prop === 'term'){
         term = value;
       }
+      
       this.handleChange(prop, value);
       
       if(this.debounceSearch === null){
@@ -62,27 +69,44 @@ class Landing extends Component {
       }
     }
     
-    updateSearch = () => {
-      this.props.search();
-    }
-    
     handleClickBusiness = (businessID) => {
-      const business = find(this.props.results, {id: businessID});
-      if(business){
-        this.setState({...this.state, business: business, dialogOpen:true});
-      }
+      this.setState({...this.state, businessID: businessID, dialogOpen: true});
     }
     
     updateState = (prop, value) => {
       this.setState({...this.state, [prop]: value});
     }
+    
+    updateSearch = () => {
+      this.props.search();
+    }
+    
+    componentWillReceiveProps(nextProps) {
+      // console.log(nextProps)
+      // if(nextProps.results){
+      //   let { business } = this.state;
+      //   let nextBusiness = find(nextProps.results, {id: business.id});
+        
+      //   console.log('nextBusiness', business, nextBusiness);
+      //   // should update the local business state
+      //   if(business && nextBusiness){
+      //     if(nextBusiness.reviews.length != business.reviews.length){
+      //       this.setState({...this.state, business:nextBusiness});
+      //     }
+      //   }
+      // }
+    }
   
     render() {
-      const { theme, results, term, loc, popular, good, asc } = this.props;
-      const { dialogOpen, business } = this.state;
+      const { theme, results, term, loc, popular, good, asc, onReviewSubmit } = this.props;
+      const { dialogOpen, businessID } = this.state;
+      const business = find(results, {id: businessID});
       return (
         <Panel>
-          <BusinessDialog open={dialogOpen} business={business} onDone={() => this.updateState('dialogOpen', false)}/>
+          <BusinessDialog open={dialogOpen} business={business}
+            onDone={() => this.updateState('dialogOpen', false)}
+            onReviewSubmit={onReviewSubmit}
+          />
           <article className={theme.page}>
             <header>
               <Input theme={theme} type="text" hint="Search" name="search"

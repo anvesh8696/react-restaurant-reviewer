@@ -24,7 +24,10 @@ class BusinessList extends Component {
     }
     
     stars(rating){
-      return fill(Array(Math.floor(rating)), 'star').join(' ') + (rating > Math.floor(rating) ? ' star_half' : '');
+      let f = Math.floor(rating);
+      let r = Math.round(rating);
+      let remain = f === r ? '' : f < r ? ' star_half' : ' star';
+      return fill(Array(f), 'star').join(' ') + remain;
     }
     
     renderResult(index, id, avatar, caption, rating, displayAddress) {
@@ -43,7 +46,7 @@ class BusinessList extends Component {
             key={`res_${index}`}
             avatar={avatar || <DefaultIcon />}
             caption={caption}
-            legend={<FontIcon value={this.stars(rating)} className={theme.stars}/>}
+            legend={<FontIcon ariaLabel={`, ${rating} star rating`} value={this.stars(rating)} className={theme.stars}/>}
             theme={theme}
             onClick={() => onChange(id)}
           />
@@ -56,9 +59,11 @@ class BusinessList extends Component {
           avatar={avatar || <DefaultIcon />}
           caption={caption}
           legend={displayAddress}
-          rightIcon={this.stars(rating)}
+          rightIcon={<FontIcon ariaLabel={`, ${rating} star rating`} value={this.stars(rating)}/>}
           theme={theme}
           onClick={() => onChange(id)}
+          tabIndex="0"
+          aria-label={`${caption} has a ${rating} star`}
         />
       );
     }
@@ -66,7 +71,7 @@ class BusinessList extends Component {
     render() {
       const { businesses } = this.props;
       return (
-        <List selectable ripple>
+        <List selectable ripple tabIndex="0">
           <ListSubHeader caption="Search Results:" />
           {
             businesses ? 

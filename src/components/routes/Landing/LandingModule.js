@@ -1,6 +1,6 @@
 import { handleActions, createAction } from 'redux-actions';
 import Yelp from 'api/Yelp';
-import { map, orderBy, filter, delay, dropRight, concat } from 'lodash';
+import { map, orderBy, filter, delay, dropRight, concat, findIndex } from 'lodash';
 import { dispatch } from 'components/App';
 
 // ------------------------------------
@@ -17,13 +17,14 @@ const yelp = new Yelp(
 
 export const ON_CHANGE = 'ON_CHANGE';
 export const ON_FILTER_UPDATE = 'ON_FILTER_UPDATE';
+export const ON_ADD_REVIEW = 'ON_ADD_REVIEW';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
 export const onChange = createAction(ON_CHANGE);
-
 export const onFilterUpdate = createAction(ON_FILTER_UPDATE);
+export const onReviewSubmit = createAction(ON_ADD_REVIEW);
 
 // ------------------------------------
 // ASYNC Actions
@@ -45,7 +46,7 @@ export function search() {
           thumb: d.image_url,
           name: d.name,
           rating: d.rating,
-          reviews: concat(d.reviews, filter(reviews, { id: d.id})),
+          reviews: concat(d.reviews, filter(reviews, { business: d.id})),
           city: d.location.city,
           state: d.location.state_code,
           postal: d.location.postal_code,
@@ -115,6 +116,30 @@ if (navigator.geolocation) {
   delay(() => dispatch(search()), 100);
 }
 
+const handleAddReview = (state, data) => {
+  const { reviews, model, results } = state;
+  const { businessID, review, rating } = data;
+  const mfi = findIndex(model, {id: businessID});
+  const rfi = findIndex(results, {id: businessID});
+  
+  let rev = {
+    business: businessID,
+    excerpt: review,
+    rating: rating,
+    time_created: new Date().getTime(),
+    user : {
+      id: 'dwwqUjXrUmMXfsEH1eOBMQ',
+      image_url: 'https://s3-media3.fl.yelpcdn.com/assets/srv0/yelp_styleguide/bf5ff8a79310/assets/img/default_avatars/user_medium_square.png',
+      name : 'Anonymous'
+    }
+  };
+  
+  return state
+    .setIn(['reviews', reviews.length], rev)
+    .setIn(['results', rfi, 'reviews', results[rfi].reviews.length], rev)
+    .setIn(['model', mfi, 'reviews', model[mfi].reviews.length], rev);
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -123,7 +148,8 @@ export const landingReducer = handleActions({
   [ON_FILTER_UPDATE]: (state, action) => {
     const { popular, good, asc, model } = state;
     return {...state, results: filterModel(popular, good, asc, model)};
-  }
+  },
+  [ON_ADD_REVIEW]: (state, action) => handleAddReview(state, action.payload),
 }, initialState);
 
 export default landingReducer;

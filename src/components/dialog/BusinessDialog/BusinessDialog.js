@@ -5,6 +5,8 @@ import { Dialog, Link} from 'react-toolbox/components';
 import { Button } from 'react-toolbox/components/button';
 import ReactDOM from 'react-dom';
 import ReviewList from 'components/list/ReviewList';
+import ReviewForm from 'components/form/ReviewForm';
+import { find } from 'lodash';
 
 @themr('BusinessDialog', defaultTheme)
 class BusinessDialog extends Component {
@@ -13,6 +15,7 @@ class BusinessDialog extends Component {
       theme: PropTypes.object.isRequired,
       open: PropTypes.bool.isRequired,
       onDone: PropTypes.func.isRequired,
+      onReviewSubmit: PropTypes.func.isRequired,
       business: PropTypes.object
     }
     
@@ -35,22 +38,27 @@ class BusinessDialog extends Component {
     }
   
     render() {
-      const { theme, open, onDone, business } = this.props;
+      const { theme, open, onDone, onReviewSubmit, business } = this.props;
       const { name, displayAddress, reviews } = business;
+      const leftReview = find(reviews, (r) => { return r.user.id === 'dwwqUjXrUmMXfsEH1eOBMQ'; }) != undefined;
       return (
         <Dialog active={open} theme={theme}>
           <div className={theme.dialogContent}>
-            <h4 ref="businessDialog">{name}</h4>
+            <h4 ref="businessDialog" tabIndex="0">{name}</h4>
             <Link
               href={`https://www.google.com/maps/place/${encodeURI(displayAddress)}`}
               label={displayAddress}
               target="_blank"
               className={theme.link}
             />
+            {
+              leftReview ? null :
+              <ReviewForm onSubmit={(review, rating) => onReviewSubmit(business.id, review, rating)} />
+            }
             <ReviewList reviews={reviews} />
           </div>
           <footer className={theme.buttons}>
-            <Button label="Done" raised primary onClick={onDone}/>
+            <Button label="Close" raised primary onClick={onDone}/>
           </footer>
         </Dialog>
       );
