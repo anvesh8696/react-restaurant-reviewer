@@ -4,7 +4,7 @@ import defaultTheme from './BusinessList.scss';
 import { List, ListItem, ListSubHeader } from 'react-toolbox/components/list';
 import { fill, find } from 'lodash';
 import sizeMe from 'react-sizeme';
-import FontIcon from 'react-toolbox/components/font_icon';
+import { Avatar, FontIcon } from 'react-toolbox/components';
 
 @themr('BusinessList', defaultTheme)
 class BusinessList extends Component {
@@ -54,7 +54,7 @@ class BusinessList extends Component {
         return (
           <ListItem
             key={`res_${index}`}
-            avatar={avatar || <DefaultIcon />}
+            avatar={<Avatar title={caption} image={avatar} theme={theme} /> || <DefaultIcon />}
             avatarAlt={`${caption} image`}
             caption={caption}
             legend={<FontIcon ariaLabel={`, ${rating} star rating`} value={this.stars(rating)} className={theme.stars}/>}
@@ -68,7 +68,7 @@ class BusinessList extends Component {
       return (
         <ListItem
           key={`res_${index}`}
-          avatar={avatar || <DefaultIcon />}
+          avatar={<Avatar title={caption} image={avatar} theme={theme} /> || <DefaultIcon />}
           avatarAlt={`${caption} image`}
           caption={caption}
           legend={displayAddress}

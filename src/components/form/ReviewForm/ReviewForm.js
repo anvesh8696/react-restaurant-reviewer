@@ -39,9 +39,9 @@ class ReviewForm extends Component {
         <Card className={theme.card} role="form" aria-label="Add Review">
           <div className={theme.cardBody}>
             <StarSlider value={rating} onChange={(value)=>this.handleChange('rating', value)}/>
-            <Input type="text" multiline label="Your Name" maxLength={40}
+            <Input type="text" label="Your Name" maxLength={40} theme={theme}
               value={username} onChange={(value)=>this.handleChange('username', value)}/>
-            <Input type="text" multiline label="Leave a review" maxLength={240}
+            <Input type="text" multiline label="Leave a review" maxLength={240} theme={theme}
               value={review} onChange={(value)=>this.handleChange('review', value)}/>
           </div>
           <CardActions theme={theme}>

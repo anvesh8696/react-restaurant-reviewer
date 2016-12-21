@@ -1,5 +1,6 @@
 .cardBody {
   padding: 1.4rem 1.6rem;
+  color: black;
 }
 
 .card {
@@ -9,4 +10,8 @@
 
 .cardActions {
   justify-content: flex-end;
+}
+
+.label, .counter {
+  color: black;
 }
