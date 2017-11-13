@@ -1,4 +1,4 @@
-# react-restaurant-reviewer
+# react-restaurant-reviewer ---
 
 [example]: https://jdbence.github.io/react-restaurant-reviewer/index.html
 [get-zip]: https://github.com/jdbence/react-restaurant-reviewer/archive/master.zip
